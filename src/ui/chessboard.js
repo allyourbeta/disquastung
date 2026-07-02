@@ -277,10 +277,8 @@ class MiniChessboard {
   }
 }
 
-// Vite bundles this file as an ES module, which scopes the class to this
-// module -- game.js (a separate module) also references the bare identifier
-// `MiniChessboard`, so expose it globally exactly as classic <script> tags
-// implicitly did when both files shared one global scope.
+// Expose globally: game.js (a separate ES module under Vite) references the
+// bare identifier `MiniChessboard`, same as when both were classic scripts.
 window.MiniChessboard = MiniChessboard;
 
 // Initialize chessboard when DOM is loaded

@@ -4,7 +4,7 @@ Overnight unattended run per MIGRATION_SPEC.md. Update this file at every phase 
 meaningful sub-step. Terse entries only.
 
 ## Status
-- Current phase: 1 (scaffold + static shell) — GREEN
+- Current phase: 2 (engine + golden-master tests) — GREEN
 - Branch: `vercel-migration` (created from `main`)
 
 ## Recon notes (Phase 0.2)
@@ -114,10 +114,26 @@ meaningful sub-step. Terse entries only.
   `--force` fix risks breaking pinned versions overnight with no one able to
   verify. Flagged for morning review.
 
+- vitest picks up any `*.test.js` under the repo by default, which collided
+  with Playwright's `tests/e2e/smoke.spec.js` (Playwright's `test()` isn't
+  the same symbol as vitest's). Added `vitest.config.js` scoping vitest to
+  `tests/unit/**/*.test.js` only.
+- src/engine/knight.js and bishop.js return full paths (`knightPath`,
+  `bishopPath`) in addition to the `*Moves` count functions the spec's tree
+  names explicitly -- Phase 3's backend.js needs the path array for its
+  `path` field in the correct-answer JSON shape, and re-deriving it from a
+  bare integer isn't possible, so the count functions are now thin wrappers
+  over the path functions (`knightMoves = knightPath(...).length - 1`; single
+  source of truth, no duplicated branching logic).
+- chessboard.js's added `window.MiniChessboard = ...` line (from Phase 1)
+  pushed it to 301 lines, over the 300 max for modified files (only
+  auto-advance.js has a spec-granted exception). Trimmed the comment by one
+  line to land at 299.
+
 ## Phase checklist
 - [x] Phase 0 — golden master
-- [x] Phase 1 — scaffold (commit pending below)
-- [ ] Phase 2 — engine
+- [x] Phase 1 — scaffold
+- [x] Phase 2 — engine (69/69 golden-master assertions green)
 - [ ] Phase 3 — UI wiring
 - [ ] Phase 4 — stats
 - [ ] Phase 5 — deploy
