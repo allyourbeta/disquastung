@@ -4,7 +4,7 @@ Overnight unattended run per MIGRATION_SPEC.md. Update this file at every phase 
 meaningful sub-step. Terse entries only.
 
 ## Status
-- Current phase: 3 (UI wired to engine) — GREEN
+- Current phase: 4 (stats + weighted selection) — GREEN
 - Branch: `vercel-migration` (created from `main`)
 
 ## Recon notes (Phase 0.2)
@@ -161,11 +161,50 @@ meaningful sub-step. Terse entries only.
   confirms the pipeline is wired rather than asserting a *new* fetch fires
   exactly at answer-time). Zero console errors across every test.
 
+- Phase 4: `src/api/storage.js` is the sole persistence entry point; chooses
+  `SupabaseAdapter` iff both `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+  are set at build/dev time (Vite static-replaces `import.meta.env.*`), else
+  `LocalAdapter`. Every method catches and logs, never throws to the caller
+  (gameplay must never break on a storage failure).
+- `recordAnswer({square, drill, correct, attempts})` is drill-generic per
+  spec's declared interface. Decision (spec silent on knight/bishop): since
+  those questions involve TWO squares and weighted selection only reads
+  stats for the color drill, backend.js credits BOTH squares equally on a
+  knight/bishop check (`recordPairAnswer`) rather than picking one
+  arbitrarily. Low-risk either way since it doesn't affect the color drill's
+  weighting; documented here per spec's "record silent-spec judgment calls"
+  instruction.
+- `src/engine/select.js`'s `weightedRandomSquare` matches the spec's exact
+  formula (`1 + centerBoost(0.5) + missBoost(min(1.5, 0.5*misses))`).
+  backend.js's `pickColorSquare` reuses the same "avoid last 20 recent
+  squares" retry loop as the uniform picker, just drawing from
+  `weightedRandomSquare(stats)` instead of `randomSquare()` -- recent-avoidance
+  and weighting are orthogonal and spec doesn't say to drop the former.
+- `supabase/migrations/0001_square_stats.sql` only grants select/insert/update
+  RLS policies, exactly as spec section 4.6 specifies. `SupabaseAdapter.resetStats()`
+  issues a `delete`, which will fail RLS once a real Supabase project exists
+  (no delete policy was requested) -- dormant tonight either way; noted for
+  MORNING_REPORT since it's a real gap for whoever wires Supabase up later.
+- Unit tests: `select.test.js` (all 64 squares drawn over 20k samples; center
+  vs. corner ratio in [1.25, 1.75]; a manually-elevated miss count raises a
+  square's frequency; no starvation). `local-adapter.test.js` shims the tiny
+  slice of `localStorage` the adapter needs (a `Map`-backed global) instead
+  of adding a jsdom/happy-dom dependency -- avoids a new devDependency for a
+  three-method interface. `supabase-adapter.test.js` confirms clean import
+  and full no-op behavior with no env vars set (the "dormant" contract).
+- E2E `stats.spec.js`: plays a wrong-then-right round plus a second correct
+  round, asserts the `disquastung-stats` localStorage blob directly (miss
+  count, total seen count) rather than relying on redraw frequency (spec
+  explicitly calls the frequency-based assertion too flaky), then reloads
+  and asserts the blob is unchanged.
+
 ## Phase checklist
 - [x] Phase 0 — golden master
 - [x] Phase 1 — scaffold
 - [x] Phase 2 — engine (69/69 golden-master assertions green)
 - [x] Phase 3 — UI wiring (17/17 Playwright + 69/69 vitest green)
+- [x] Phase 4 — stats (18/18 Playwright + 79/79 vitest green, all files <=300
+      lines except the spec-approved auto-advance.js exception)
 - [ ] Phase 3 — UI wiring
 - [ ] Phase 4 — stats
 - [ ] Phase 5 — deploy

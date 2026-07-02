@@ -8,6 +8,8 @@ import { FILES, randomSquare, squareColor } from "./engine/board.js";
 import { knightPath } from "./engine/knight.js";
 import { bishopPath, bishopMoves } from "./engine/bishop.js";
 import { knightHint, bishopHint, colorHint } from "./engine/messages.js";
+import { weightedRandomSquare } from "./engine/select.js";
+import * as storage from "./api/storage.js";
 
 const RECENT_LIMIT = 20; // ported from routes.py's RECENT_LIMIT
 
@@ -48,9 +50,22 @@ function freshTwoBishop() {
   return [a, b]; // pathological fallback (should never hit)
 }
 
-// Phase 4 swaps this for weightedRandomSquare(stats) on the color drill only.
-function pickColorSquare() {
-  return freshSquare();
+async function pickColorSquare() {
+  const stats = await storage.getSquareStats();
+  const avoid = new Set(recentSquares);
+  for (let i = 0; i < 200; i++) {
+    const s = weightedRandomSquare(stats);
+    if (!avoid.has(s)) return s;
+  }
+  return weightedRandomSquare(stats); // pathological fallback (should never hit)
+}
+
+// Knight/bishop questions involve two squares; a wrong answer implicates
+// both equally, so both get credited (weighted selection only reads this
+// for the color drill, but the interface is drill-generic).
+async function recordPairAnswer(drill, a, b, correct, attempts) {
+  await storage.recordAnswer({ square: a, drill, correct, attempts });
+  await storage.recordAnswer({ square: b, drill, correct, attempts });
 }
 
 const state = {
@@ -60,8 +75,8 @@ const state = {
   knight_attempts: 0, bishop_attempts: 0,
 };
 
-function colorNew() {
-  const square = pickColorSquare();
+async function colorNew() {
+  const square = await pickColorSquare();
   rememberSquares(square);
   state.square = square;
   state.correct_color = squareColor(square);
@@ -69,12 +84,14 @@ function colorNew() {
   return { square };
 }
 
-function colorCheck(answer) {
+async function colorCheck(answer) {
   const user = String(answer || "").trim();
-  if (user === state.correct_color) {
+  const correct = user === state.correct_color;
+  const n = correct ? state.color_attempts : ++state.color_attempts;
+  await storage.recordAnswer({ square: state.square, drill: "color", correct, attempts: n });
+  if (correct) {
     return { correct: true, square: state.square, correct_color: state.correct_color };
   }
-  const n = ++state.color_attempts;
   return { correct: false, attempts: n, message: colorHint(n) };
 }
 
@@ -90,13 +107,15 @@ function knightNew() {
   return { square_a: a, square_b: b };
 }
 
-function knightCheck(answer) {
+async function knightCheck(answer) {
   const user = Number.parseInt(answer, 10);
   if (Number.isNaN(user)) return { error: "invalid" };
-  if (user === state.correct_moves) {
+  const correct = user === state.correct_moves;
+  const n = correct ? state.knight_attempts : ++state.knight_attempts;
+  await recordPairAnswer("knight", state.square_a, state.square_b, correct, n);
+  if (correct) {
     return { correct: true, piece: "Knight", path: state.knight_path, square_a: state.square_a, square_b: state.square_b };
   }
-  const n = ++state.knight_attempts;
   return { correct: false, attempts: n, message: knightHint(n) };
 }
 
@@ -111,13 +130,15 @@ function bishopNew() {
   return { square_a: a, square_b: b };
 }
 
-function bishopCheck(answer) {
+async function bishopCheck(answer) {
   const user = Number.parseInt(answer, 10);
   if (Number.isNaN(user)) return { error: "invalid" };
-  if (user === state.correct_moves) {
+  const correct = user === state.correct_moves;
+  const n = correct ? state.bishop_attempts : ++state.bishop_attempts;
+  await recordPairAnswer("bishop", state.square_a, state.square_b, correct, n);
+  if (correct) {
     return { correct: true, piece: "Bishop", path: state.bishop_path, square_a: state.square_a, square_b: state.square_b };
   }
-  const n = ++state.bishop_attempts;
   return { correct: false, attempts: n, message: bishopHint(n) };
 }
 
