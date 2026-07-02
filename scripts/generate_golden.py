@@ -15,20 +15,16 @@ import random
 import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# legacy/app's own internals do `from app import routes` (absolute, top-level
+# "app"), so put legacy/ on the path -- this also still works pre-move (Phase
+# 0), when "app" lives directly at REPO_ROOT and legacy/ doesn't exist yet.
+sys.path.insert(0, os.path.join(REPO_ROOT, "legacy"))
 sys.path.insert(0, REPO_ROOT)
 
-# Phase 0 runs before the Phase 1 `git mv app -> legacy/app`; Phase 1 updates
-# this import to `legacy.app.routes` once the move happens.
-try:
-    from legacy.app.routes import (
-        knight_path, bishop_path, bishop_2_move_path,
-        _knight_hint, _bishop_hint, _color_hint, _FILES, _RANKS,
-    )
-except ImportError:
-    from app.routes import (
-        knight_path, bishop_path, bishop_2_move_path,
-        _knight_hint, _bishop_hint, _color_hint, _FILES, _RANKS,
-    )
+from app.routes import (
+    knight_path, bishop_path, bishop_2_move_path,
+    _knight_hint, _bishop_hint, _color_hint, _FILES, _RANKS,
+)
 
 SEED = 20260702
 OUT_DIR = os.path.join(REPO_ROOT, "tests", "golden")

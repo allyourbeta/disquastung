@@ -1,6 +1,14 @@
 # Ignore Python virtual environments
 knight-venv/
 .golden-venv/
+
+# Node / Vite / Vercel / Playwright
+node_modules/
+dist/
+.vercel/
+test-results/
+playwright-report/
+blob-report/
 *.pyc
 *.pyo
 *.pyd

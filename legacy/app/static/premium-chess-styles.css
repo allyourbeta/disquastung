@@ -1,0 +1,1147 @@
+/* --- Tooltip Styles --- */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.7em;
+  color: rgba(255, 215, 0, 0.8);
+  cursor: pointer;
+}
+
+/* Increase square label font size on larger screens */
+@media (min-width: 769px) {
+  .chess-square {
+    font-size: 0.875rem !important; /* 14px / 16px = 0.875rem */
+  }
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  opacity: 0;
+  width: 280px; /* Slightly wider to accommodate larger text */
+  background-color: #2c3e50;
+  color: #fff;
+  text-align: center;
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1rem; /* INCREASED from 0.9rem */
+  line-height: 1.6; /* INCREASED from 1.4 */
+  padding: 12px; /* Adjusted padding */
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  z-index: 10;
+  top: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Style for highlighted text inside the tooltip */
+.tooltip .highlight {
+  color: var(--accent-gold, #d4af37); /* Use CSS variable with fallback */
+  font-weight: 600;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #2c3e50 transparent;
+}
+
+.tooltip.tooltip-visible .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+/* Style for the attribution line in the tooltip */
+.tooltip .attribution {
+  margin-top: 8px; /* This adds the space */
+  display: block; /* Ensures it's on its own line */
+}
+
+/* Mobile positioning fix */
+@media (max-width: 480px) {
+  .tooltip .tooltiptext {
+    /* Shift left by 80% of its width instead of 50% */
+    transform: translateX(-80%);
+  }
+}
+
+/* Premium Chess Design - Complete CSS */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-dark: #1a1a1a;
+  --primary-light: #2d2d2d;
+  --accent-gold: #d4af37;
+  --accent-gold-light: #f4d03f;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-muted: #808080;
+  --surface-dark: #252525;
+  --surface-light: #3a3a3a;
+  --border-subtle: #404040;
+  --success: #27ae60;
+  --error: #e74c3c;
+  --knight-color: #3498db;
+  --bishop-color: #9b59b6;
+  --color-color: #e67e22;
+}
+
+body {
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: var(--primary-dark);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.background-pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.1) 25%,
+      transparent 25%
+    ),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 100px 100px;
+  background-position: 0 0, 0 50px, 50px -50px, -50px 0px;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.main-header {
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(
+    135deg,
+    var(--accent-gold),
+    var(--accent-gold-light)
+  );
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-dark);
+  font-size: 2rem;
+}
+
+.brand-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.brand-title {
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.brand-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.header-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.main-content {
+  padding: 4rem 0;
+}
+
+.content-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.intro-section {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.section-description {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.training-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.training-card {
+  background: var(--surface-dark);
+  border: 2px solid transparent;
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.training-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--accent-gold);
+  transform: scaleX(0);
+  transition: transform 0.3s ease, height 0.3s ease;
+  z-index: 2;
+}
+
+.training-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-width: 3px;
+  z-index: 1;
+}
+
+.training-card:hover::before {
+  transform: scaleX(1);
+  height: 6px;
+}
+
+.training-card .card-content {
+  transition: transform 0.3s ease;
+}
+
+.training-card:hover .card-content {
+  transform: scale(1.02);
+}
+
+.color-card:hover {
+  border-color: var(--color-color);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.bishop-card:hover {
+  border-color: var(--bishop-color);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.knight-card:hover {
+  border-color: var(--knight-color);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.piece-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  color: white;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5), -1px -1px 0px rgba(0, 0, 0, 0.3),
+    1px -1px 0px rgba(0, 0, 0, 0.3), -1px 1px 0px rgba(0, 0, 0, 0.3),
+    0px 4px 8px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.piece-icon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 100%
+  );
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.training-card:hover .piece-icon {
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.knight-icon {
+  background: linear-gradient(135deg, var(--knight-color), #2980b9);
+}
+
+.bishop-icon {
+  background: linear-gradient(135deg, var(--bishop-color), #8e44ad);
+}
+
+.color-icon {
+  background: linear-gradient(135deg, var(--color-color), #d35400);
+}
+
+.difficulty-badge {
+  padding: 0.875rem 1.75rem;
+  border-radius: 24px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.difficulty-badge.beginner {
+  background: rgba(39, 174, 96, 0.2);
+  color: #2ecc71;
+  border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.difficulty-badge.intermediate {
+  background: rgba(241, 196, 15, 0.2);
+  color: #f1c40f;
+  border: 1px solid rgba(241, 196, 15, 0.3);
+}
+
+.difficulty-badge.advanced {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.card-content {
+  margin-bottom: 2rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.card-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.card-stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  background: var(--surface-light);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+}
+
+.training-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.75rem 2rem;
+  min-height: 70px;
+  background: var(--surface-light);
+  border: 2px solid var(--border-subtle);
+  border-radius: 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.75rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.training-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.training-button:hover::before {
+  left: 100%;
+}
+
+.knight-button:hover {
+  background: var(--knight-color);
+  border-color: var(--knight-color);
+  transform: translateY(-2px);
+}
+
+.bishop-button:hover {
+  background: var(--bishop-color);
+  border-color: var(--bishop-color);
+  transform: translateY(-2px);
+}
+
+.color-button:hover {
+  background: var(--color-color);
+  border-color: var(--color-color);
+  transform: translateY(-2px);
+}
+
+.button-arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.training-button:hover .button-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .training-button {
+    padding: 1.5rem 1.75rem;
+    font-size: 1.5rem;
+    min-height: 65px;
+  }
+}
+
+@media (max-width: 480px) {
+  .training-button {
+    padding: 1.25rem 1.5rem;
+    font-size: 1.25rem;
+    min-height: 60px;
+  }
+}
+
+/* Game Pages */
+.game-container {
+  min-height: 100vh;
+  background: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.game-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(
+      circle at 30% 30%,
+      rgba(212, 175, 55, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(52, 152, 219, 0.05) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
+.game-content {
+  background: var(--surface-dark);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 3rem;
+  max-width: 700px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.game-title {
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, sans-serif;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.squares-container {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.square-display {
+  width: 120px;
+  height: 120px;
+  background: var(--surface-light);
+  border: 2px solid var(--border-subtle);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.square-display:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.question-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.question-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+}
+
+.options-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.option-button {
+  padding: 1rem 1.5rem;
+  background: var(--surface-light);
+  border: 2px solid var(--border-subtle);
+  border-radius: 12px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 70px;
+}
+
+.option-button:hover {
+  background: var(--accent-gold);
+  color: var(--primary-dark);
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+.navigation-section {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: var(--surface-light);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  border: 2px solid var(--border-subtle);
+  transition: all 0.3s ease;
+  margin: 0 0.5rem;
+}
+
+.nav-link:hover {
+  background: var(--accent-gold);
+  color: var(--primary-dark);
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+.nav-link.primary {
+  background: var(--accent-gold);
+  color: var(--primary-dark);
+  border-color: var(--accent-gold);
+}
+
+.nav-link.primary:hover {
+  background: var(--accent-gold-light);
+  border-color: var(--accent-gold-light);
+}
+
+/* Alert Messages */
+.alert {
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid;
+}
+
+.alert-success {
+  background: rgba(39, 174, 96, 0.1);
+  color: #2ecc71;
+  border-color: rgba(39, 174, 96, 0.3);
+}
+
+.alert-danger {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.3);
+  animation: pulseError 0.6s ease-in-out;
+}
+
+@keyframes pulseError {
+  0% {
+    transform: scale(1);
+    background: rgba(231, 76, 60, 0.2);
+  }
+  50% {
+    transform: scale(1.02);
+    background: rgba(231, 76, 60, 0.15);
+  }
+  100% {
+    transform: scale(1);
+    background: rgba(231, 76, 60, 0.1);
+  }
+}
+
+/* Chessboard Styles - Enhanced for Premium Theme */
+#chessboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px auto;
+  max-width: 100%;
+}
+
+.mini-chessboard {
+  position: relative;
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.15s ease-out;
+  border: 2px solid var(--accent-gold);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.chess-square {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chess-square:hover {
+  transform: scale(1.1);
+  z-index: 5;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .training-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .header-stats {
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+  }
+
+  .content-container {
+    padding: 0 1rem;
+  }
+
+  .training-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .training-card {
+    padding: 1.5rem;
+  }
+
+  .piece-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 3rem;
+    border-radius: 18px;
+  }
+
+  .game-content {
+    padding: 1.25rem;
+    margin: 0.5rem;
+  }
+
+  .game-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .squares-container {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .square-display {
+    width: 90px;
+    height: 90px;
+    font-size: 1.8rem;
+  }
+
+  .question-section {
+    margin-bottom: 1.25rem;
+  }
+
+  .question-text {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .options-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .option-button {
+    min-width: 65px;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+  }
+
+  .navigation-section {
+    margin-top: 1rem;
+  }
+
+  .nav-link {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+    margin: 0.25rem;
+  }
+
+  .alert {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+
+  .mini-chessboard {
+  }
+
+  .difficulty-badge {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-description {
+    font-size: 1.1rem;
+  }
+
+  .piece-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+    border-radius: 15px;
+  }
+
+  .game-container {
+    padding: 0.75rem;
+  }
+
+  .game-content {
+    padding: 1rem;
+    margin: 0;
+    border-radius: 16px;
+  }
+
+  .game-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .squares-container {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .square-display {
+    width: 80px;
+    height: 80px;
+    font-size: 1.6rem;
+    border-radius: 12px;
+  }
+
+  .question-section {
+    margin-bottom: 1rem;
+  }
+
+  .question-text {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .options-grid {
+    gap: 0.5rem;
+  }
+
+  .option-button {
+    min-width: 55px;
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem;
+  }
+
+  .navigation-section {
+    margin-top: 0.75rem;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .mini-chessboard {
+  }
+
+  .difficulty-badge {
+    padding: 0.625rem 1.25rem;
+    font-size: 1rem;
+  }
+}
+
+/* Ultra small screens */
+@media (max-width: 360px) {
+  .mini-chessboard {
+  }
+}
+
+/* Hide keyboard hints on mobile devices */
+#keyboard-hint {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  #keyboard-hint {
+    display: none !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  #keyboard-hint {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   Mobile portrait: full-height, no-scroll game screens.
+   Scoped to .game-page (the three drill templates) so the
+   home page and result page are untouched. Desktop (>768px)
+   keeps the original centered-card layout entirely.
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Make the screen exactly one viewport tall. 100svh = the
+     "small" viewport (browser bars showing) so content always
+     fits even when the address bar is visible -> no scroll.
+     100vh kept first as a fallback for old browsers. */
+  .game-page .game-container {
+    min-height: 100vh;
+    min-height: 100svh;
+    height: 100svh;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  /* Full-bleed flex column. Padding respects notch / home-bar
+     safe areas so nothing hides behind hardware. */
+  .game-page .game-content {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    padding: calc(env(safe-area-inset-top, 0px) + 1rem)
+             calc(env(safe-area-inset-right, 0px) + 1rem)
+             calc(env(safe-area-inset-bottom, 0px) + 0.75rem)
+             calc(env(safe-area-inset-left, 0px) + 1rem);
+  }
+
+  /* Compact prompt block so the buttons get the space. */
+  .game-page .game-title { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .game-page .squares-container { gap: 1rem; margin-bottom: 0.75rem; }
+  .game-page .square-display {
+    width: 64px; height: 64px; font-size: 1.75rem; border-radius: 12px;
+  }
+  .game-page .alert {
+    padding: 0.75rem 1rem; margin-bottom: 0.75rem; font-size: 0.95rem;
+  }
+
+  /* The answer region absorbs ALL leftover vertical space.
+     min-height:0 lets it shrink on short phones instead of
+     overflowing. This is what guarantees no scroll. */
+  .game-page .question-section {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .game-page .question-text { font-size: 1.1rem; margin-bottom: 0.75rem; }
+  .game-page .question-section form {
+    flex: 1 1 auto; display: flex; min-height: 0;
+  }
+  .game-page .options-grid {
+    flex: 1 1 auto;
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 0;
+    flex-wrap: nowrap;
+  }
+
+  /* Buttons fill their grid cell -> huge, easy targets,
+     keeping their borders so they still read as buttons. */
+  .game-page .option-button {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0.5rem;
+    font-size: clamp(1.25rem, 7vw, 2.75rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Small back link pinned at the very bottom, clear of targets. */
+  .game-page .navigation-section {
+    margin-top: 0.75rem; margin-bottom: 0; flex: 0 0 auto;
+  }
+  .game-page .nav-link {
+    padding: 0.5rem 1rem; font-size: 0.9rem; margin: 0;
+  }
+
+  /* Per-drill arrangements, sized to button count. */
+  .game-color  .options-grid { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
+  .game-bishop .options-grid { grid-template-columns: 1fr; grid-auto-rows: minmax(0, 1fr); }
+  .game-knight .options-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: minmax(0, 1fr); }
+
+  /* Raised "key" pads with a subtle press. Color set per drill via
+     --pad-bg / --pad-edge below. Depth kept gentle (4px ledge) so it
+     reads tactile, not cartoonish. The color game keeps its inline
+     white/black fills; only the edge + press are added there. */
+  .game-page .option-button {
+    background: var(--pad-bg);
+    border: none;
+    box-shadow: 0 4px 0 var(--pad-edge, #111),
+                0 6px 10px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  /* Neutralize the desktop gold hover (it sticks after a tap on touch). */
+  .game-page .option-button:hover {
+    background: var(--pad-bg);
+    transform: none;
+  }
+  .game-page .option-button:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--pad-edge, #111),
+                0 2px 5px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  /* Per-piece colors, matching the home-menu coding. */
+  .game-knight .option-button {
+    --pad-bg: linear-gradient(#4ea8df, #3498db 60%, #2f88c6);
+    --pad-edge: #1f618d;
+    color: #ffffff;
+  }
+  .game-bishop .option-button {
+    --pad-bg: linear-gradient(#4ea8df, #3498db 60%, #2f88c6);
+    --pad-edge: #1f618d;
+    color: #ffffff;
+  }
+
+  /* ---- Result state (shown after a correct answer) ---- */
+  /* Big, friendly verdict instead of a thin label. Keeps the green
+     success box but makes it the hero of the screen. */
+  .game-page .js-feedback.result-correct {
+    font-size: clamp(1.9rem, 8.5vw, 2.8rem);
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0;
+  }
+  /* Prominent primary action, sized to feel like the main button. */
+  .game-page .nav-link.result-next {
+    font-size: clamp(1.2rem, 5.5vw, 1.6rem);
+    font-weight: 800;
+    padding: 0.9rem 2.6rem;
+    border-radius: 16px;
+    margin: 0;
+  }
+  /* Title a touch larger in the rounded face. */
+  .game-page .game-title { font-size: 1.6rem; }
+}
+
+/* Short landscape phones (<=768px wide): trim the prompt block so
+   the fill layout still fits with no scroll. Wider phones in
+   landscape fall back to the desktop centered layout. */
+@media (max-width: 768px) and (orientation: landscape) {
+  .game-page .game-content {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+  }
+  .game-page .game-title { font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .game-page .squares-container { margin-bottom: 0.4rem; gap: 0.75rem; }
+  .game-page .square-display { width: 44px; height: 44px; font-size: 1.25rem; }
+  .game-page .question-text { font-size: 0.95rem; margin-bottom: 0.4rem; }
+  .game-page .navigation-section { margin-top: 0.4rem; }
+}

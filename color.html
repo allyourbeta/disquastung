@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Square Color Training - ChessMind Pro</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/premium-chess-styles.css" />
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-LP35D8LBWQ"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-LP35D8LBWQ");
+    </script>
+  </head>
+  <body class="game-page game-color">
+    <div class="game-container">
+      <div class="game-content">
+        <h1 class="game-title">Square Color Training</h1>
+
+        <div class="squares-container">
+          <div class="square-display"></div>
+        </div>
+
+        <div class="question-section">
+          <p class="question-text">What color is this square?</p>
+
+          <form method="post" id="colorForm">
+            <div class="options-grid">
+              <button
+                type="submit"
+                name="color"
+                value="light"
+                class="option-button"
+                style="
+                  background: #ffffff;
+                  color: #1a1a1a;
+                  border: 2px solid var(--border-subtle);
+                  --pad-edge: #c9c9c9;
+                "
+              >
+                Light
+              </button>
+              <button
+                type="submit"
+                name="color"
+                value="dark"
+                class="option-button"
+                style="
+                  background: #1a1a1a;
+                  color: #ffffff;
+                  border: 2px solid #6a6a6a;
+                  --pad-edge: #000000;
+                "
+              >
+                Dark
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="navigation-section">
+          <a href="/" class="nav-link">← Back to Training</a>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/ui/chessboard.js"></script>
+    <script type="module" src="/src/ui/game.js"></script>
+    <script type="module" src="/src/ui/speech.js"></script>
+  </body>
+</html>

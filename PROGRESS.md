@@ -4,7 +4,7 @@ Overnight unattended run per MIGRATION_SPEC.md. Update this file at every phase 
 meaningful sub-step. Terse entries only.
 
 ## Status
-- Current phase: 0 (recon + golden master)
+- Current phase: 1 (scaffold + static shell) — GREEN
 - Branch: `vercel-migration` (created from `main`)
 
 ## Recon notes (Phase 0.2)
@@ -89,10 +89,34 @@ meaningful sub-step. Terse entries only.
 
 ## Decisions log
 - (see DOM contract section above re: keyboard-input.js / auto-advance.js wiring)
+- generate_golden.py: put `legacy/` on sys.path (not just repo root) since
+  `legacy/app/__init__.py` does `from app import routes` (absolute, assumes
+  "app" is top-level importable) — works pre- and post- git-mv unchanged.
+- chessboard.js: added one line `window.MiniChessboard = MiniChessboard;` —
+  required because Vite bundles each `<script type="module">` with its own
+  scope, whereas the old classic `<script>` tags shared one global lexical
+  scope (so game.js's separate-file `new MiniChessboard(...)` call, wrapped
+  in a try/catch that silently swallows ReferenceError, would otherwise
+  silently stop rendering every result board). Not a logic change.
+- New pages use `<script type="module" src="/src/ui/...">` for all ported
+  JS (required for Vite to bundle them into dist/ at build time — a plain
+  non-module `<script src="/src/ui/...">` is not processed by Vite's HTML
+  asset graph and would 404 in the production build).
+- `.square-display` divs render empty in the new HTML (no server session to
+  source an initial square from). game.js does not currently auto-fetch on
+  page load — that boot-fetch will be added surgically in Phase 3 alongside
+  the fetch -> backend.js rewiring (documented there).
+- Home links changed from Jinja `url_for` to `/`, `/color.html`, `/knight.html`,
+  `/bishop.html` (Vite multi-page build output paths).
+- npm audit reports 5 vulnerabilities (3 moderate/1 high/1 critical) in
+  devDependency transitive deps (vite/vitest/playwright toolchain, not
+  shipped to production). Not addressed — out of scope, dev-only tooling,
+  `--force` fix risks breaking pinned versions overnight with no one able to
+  verify. Flagged for morning review.
 
 ## Phase checklist
-- [ ] Phase 0 — golden master
-- [ ] Phase 1 — scaffold
+- [x] Phase 0 — golden master
+- [x] Phase 1 — scaffold (commit pending below)
 - [ ] Phase 2 — engine
 - [ ] Phase 3 — UI wiring
 - [ ] Phase 4 — stats

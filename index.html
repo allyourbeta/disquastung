@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disquastung Chess Training - Blindfold Training</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/premium-chess-styles.css" />
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-LP35D8LBWQ"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-LP35D8LBWQ");
+    </script>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <div class="background-pattern"></div>
+
+      <header class="main-header">
+        <div class="header-container">
+          <div class="brand">
+            <div class="brand-icon">♔</div>
+            <div class="brand-text">
+              <h1 class="brand-title">
+                Disquastung Chess Training
+                <span class="tooltip">
+                  ℹ️
+                  <span class="tooltiptext">
+                    "I conclude by suggesting three simple blindfold exercises
+                    that might improve your visualization of the board and thus
+                    your ability to see colour complexes."
+                    <div class="attribution">
+                      <span class="highlight"
+                        >GM Axel Smith, <em>Light & Dark Magic</em></span
+                      >
+                    </div>
+                  </span>
+                </span>
+              </h1>
+              <p class="brand-subtitle">Start the Procedure</p>
+            </div>
+          </div>
+
+          <div class="header-stats">
+            <div class="stat-item">
+              <span class="stat-number">2,847</span>
+              <span class="stat-label">Players</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">15,293</span>
+              <span class="stat-label">Sessions</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="content-container">
+          <section class="intro-section">
+            <h2 class="section-title">Level Up Your Chess Brain</h2>
+            <p class="section-description">
+              Okay, you want GM? Opening is kindergarten. Blindfold is
+              university, blyat!
+            </p>
+          </section>
+
+          <section class="training-section">
+            <div class="training-grid">
+              <div class="training-card color-card">
+                <div class="card-header">
+                  <div class="piece-icon color-icon">◼</div>
+                  <div class="difficulty-badge beginner">Foundation</div>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">Light or Dark?</h3>
+                  <p class="card-description">
+                    Know ze squares, or you vill know ze end of my lit cigar!
+                    -A. Nimzowitch
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <a href="/color.html" class="training-button color-button">
+                    <span>BEGIN</span>
+                    <svg
+                      class="button-arrow"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="training-card bishop-card">
+                <div class="card-header">
+                  <div class="piece-icon bishop-icon">♗</div>
+                  <div class="difficulty-badge intermediate">Intermediate</div>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">Bishop Zags</h3>
+                  <p class="card-description">
+                    Bishops should stay on their color and away from little
+                    boys. -La papa
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <a href="/bishop.html" class="training-button bishop-button">
+                    <span>始め</span>
+                    <svg
+                      class="button-arrow"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="training-card knight-card">
+                <div class="card-header">
+                  <div class="piece-icon knight-icon">♘</div>
+                  <div class="difficulty-badge advanced">Advanced</div>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">Knight Leaps</h3>
+                  <p class="card-description">
+                    If I remembered how knights move, I would be the GOAT. -Sven
+                    Magnoose
+                  </p>
+                </div>
+                <div class="card-footer">
+                  <a href="/knight.html" class="training-button knight-button">
+                    <span>НАЧНИ</span>
+                    <svg
+                      class="button-arrow"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/ui/tooltip.js"></script>
+  </body>
+</html>
