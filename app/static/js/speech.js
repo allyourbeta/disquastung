@@ -21,9 +21,9 @@
 // on a correct color answer; if we handle it we return true and (when auto is
 // on) drive the advance, otherwise game.js carries on exactly as before.
 (function () {
-  // Word spoken for each square color. Chess convention is "light"/"dark";
-  // swap these two values (and re-record the clips) to hear that instead.
-  var COLOR_WORD = { light: "white", dark: "black" };
+  // Word spoken for each square color -- chess convention: "light"/"dark".
+  // To hear "white"/"black" instead, swap these values AND re-record the clips.
+  var COLOR_WORD = { light: "light", dark: "dark" };
 
   // Speak each file as a plain CAPITAL letter -- enhanced voices read "A 1 is
   // black" correctly. (Phonetic spellings like "ay"/"eff" backfired: some

@@ -15,7 +15,7 @@ set -euo pipefail
 
 # Exercises every letter + both colors + full examples, in the exact format
 # the clips use.
-SAMPLE="A. B. C. D. E. F. G. H. White. Black. A 1 is black. E 5 is black. H 1 is white."
+SAMPLE="A. B. C. D. E. F. G. H. Light. Dark. A 1 is dark. E 5 is dark. H 1 is light."
 
 if [ "$#" -gt 0 ]; then
   voices=("$@")

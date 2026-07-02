@@ -48,8 +48,8 @@ echo "Output: $OUTDIR"
 
 # --- render all 64 squares ------------------------------------------------
 # Color rule matches app/routes.py exactly:
-#   dark  if (file_index + rank_index) is even  -> spoken "black"
-#   light otherwise                             -> spoken "white"
+#   dark  if (file_index + rank_index) is even  -> spoken "dark"
+#   light otherwise                             -> spoken "light"
 files=(a b c d e f g h)
 # Speak each file as a plain CAPITAL letter -- enhanced voices read "A 1 is
 # black" correctly (verified by ear with Tessa (Enhanced)). Phonetic spellings
@@ -62,9 +62,9 @@ for fi in "${!files[@]}"; do
   L="${say_letter[$fi]}"
   for r in 1 2 3 4 5 6 7 8; do
     ri=$(( r - 1 ))
-    if (( (fi + ri) % 2 == 0 )); then color="black"; else color="white"; fi
+    if (( (fi + ri) % 2 == 0 )); then color="dark"; else color="light"; fi
     sq="${f}${r}"
-    # e.g. "ay 1 is black" -> spoken "A one is black"
+    # e.g. "A 1 is dark"
     text="${L} ${r} is ${color}"
     aiff="${OUTDIR}/${sq}.aiff"
     m4a="${OUTDIR}/${sq}.m4a"
@@ -79,7 +79,7 @@ echo "Rendered $count clips."
 echo "Total size: $(du -sh "$OUTDIR" | cut -f1)"
 echo
 echo "Listen to a couple to check pronunciation:"
-echo "  afplay ${OUTDIR}/a1.m4a   # should say: A one is black"
-echo "  afplay ${OUTDIR}/h1.m4a   # should say: H one is white"
+echo "  afplay ${OUTDIR}/a1.m4a   # should say: A 1 is dark"
+echo "  afplay ${OUTDIR}/h1.m4a   # should say: H 1 is light"
 echo
 echo "If a letter sounds wrong (e.g. \"A\" read as \"uh\"), tweak the \$text line and re-run."
