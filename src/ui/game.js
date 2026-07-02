@@ -7,6 +7,8 @@
 //
 // The <form> is left intact as a no-JavaScript fallback (a native submit still
 // posts to the server and renders the old result/hint pages).
+import * as backend from "../backend.js";
+
 (function () {
   var ADVANCE_DELAY_MS = 1900;       // knight/bishop: time to view the path board
   var COLOR_ADVANCE_DELAY_MS = 1300;  // color: static board, brief view before advancing
@@ -203,8 +205,7 @@
 
   function loadNext() {
     clearTimeout(advanceTimer);
-    fetch("/api/" + GAME + "/new", { credentials: "same-origin" })
-      .then(function (r) { return r.json(); })
+    backend.newQuestion(GAME)
       .then(function (d) {
         if (GAME === "color") {
           if (squares[0]) squares[0].textContent = d.square;
@@ -224,13 +225,7 @@
     // In-gesture audio recovery: if an iOS alarm left our persistent context
     // "interrupted", resume/rebuild it now so the beep below isn't muted. No-op normally.
     try { var ac = audio(); if (ac && ac.state !== "running") { try { ac.close(); } catch (e2) {} ctx = null; audio(); } } catch (e) {}
-    fetch("/api/" + GAME + "/check", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ answer: value })
-    })
-      .then(function (r) { return r.json(); })
+    backend.checkAnswer(GAME, value)
       .then(function (data) {
         if (data.correct) {
           try { playCorrect(); } catch (e) {}
@@ -296,4 +291,8 @@
     renderToggle();
     if (inResult) scheduleNext(GAME === "color" ? COLOR_ADVANCE_DELAY_MS : ADVANCE_DELAY_MS);
   });
+
+  // No server-rendered initial square anymore (static site, no session) --
+  // boot the first question the same way "Next" already does.
+  loadNext();
 })();

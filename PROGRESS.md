@@ -4,7 +4,7 @@ Overnight unattended run per MIGRATION_SPEC.md. Update this file at every phase 
 meaningful sub-step. Terse entries only.
 
 ## Status
-- Current phase: 2 (engine + golden-master tests) — GREEN
+- Current phase: 3 (UI wired to engine) — GREEN
 - Branch: `vercel-migration` (created from `main`)
 
 ## Recon notes (Phase 0.2)
@@ -130,10 +130,42 @@ meaningful sub-step. Terse entries only.
   auto-advance.js has a spec-granted exception). Trimmed the comment by one
   line to land at 299.
 
+- Phase 3: `src/backend.js` mirrors routes.py's JSON shapes exactly (verified
+  against Phase 0 recon notes), with module-level state standing in for
+  Flask's session (fresh per page load, same as a fresh GET). Ported
+  `_fresh_square`/`_fresh_two`/`_fresh_two_bishop`/`_is_orthogonal_adjacent`
+  faithfully including the exact pathological-fallback shape (bishop's
+  200-attempt loop keeps the LAST `b` tried, not a brand-new pick).
+- game.js changes (surgical, both fetch() call sites only): added
+  `import * as backend from "../backend.js"` at the top; `loadNext()` now
+  calls `backend.newQuestion(GAME)` instead of `fetch(...)`; `answer()` now
+  calls `backend.checkAnswer(GAME, value)` instead of `fetch(...)`. Added
+  ONE new line at the very end of the IIFE: `loadNext();` to boot the first
+  question, since there's no more server-rendered initial square (this is
+  the "adapt minimally" boot-sequence fix anticipated in Phase 1 of the
+  spec). The network-failure `.catch()` fallback (native form.submit()) is
+  now unreachable dead code (backend.js never rejects) — left as-is per
+  "preserve everything else byte-for-byte," noted for MORNING_REPORT.
+- Playwright E2E (17 tests, all green): color wrong x3 hint text verified
+  verbatim against tests/golden/messages.json, correct-answer verdict +
+  board render, next-question flow; all 4 keyboard keys (w/l/b/d) plus
+  Enter/Space advance; knight and bishop full correct rounds (ground truth
+  computed by importing src/engine/*.js directly into the Node-side test,
+  not hardcoded); bishop "not possible" (-1) case found by reloading until
+  hit (bounded 60 attempts) since square pairs are randomized; Auto toggle
+  flips on all 3 pages; Speak toggle present on color only, persists via
+  localStorage across reload; Speak-ON correct answer triggers a network
+  request for the answered square's `.m4a` clip (captured via
+  `page.on('request')`, matched against the boot-time preload sweep --
+  speech.js preloads all 64 clips on mount when enabled, so this test
+  confirms the pipeline is wired rather than asserting a *new* fetch fires
+  exactly at answer-time). Zero console errors across every test.
+
 ## Phase checklist
 - [x] Phase 0 — golden master
 - [x] Phase 1 — scaffold
 - [x] Phase 2 — engine (69/69 golden-master assertions green)
+- [x] Phase 3 — UI wiring (17/17 Playwright + 69/69 vitest green)
 - [ ] Phase 3 — UI wiring
 - [ ] Phase 4 — stats
 - [ ] Phase 5 — deploy
