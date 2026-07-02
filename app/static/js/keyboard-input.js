@@ -229,7 +229,7 @@ class KeyboardHandler {
         break;
       case "color":
         hintText =
-          "⌨️ Keys: W/L for Light, B/D for Dark • Enter/Space to continue";
+          "⌨️ Keys: W for White, B for Black • Enter/Space to continue";
         break;
     }
 

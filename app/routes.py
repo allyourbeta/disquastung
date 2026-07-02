@@ -242,7 +242,7 @@ def color_game():
             elif attempt_count == 2:
                 error_message = "Still incorrect. Think about the checkerboard pattern."
             elif attempt_count == 3:
-                error_message = "Not quite right. Remember: a1 is a dark square, pattern alternates from there."
+                error_message = "Not quite right. Remember: a1 is a black square, pattern alternates from there."
             else:
                 error_message = f"Incorrect attempt #{attempt_count}. Visualize the board pattern."
             
@@ -365,7 +365,7 @@ def _color_hint(n):
     if n == 2:
         return "Still incorrect. Think about the checkerboard pattern."
     if n == 3:
-        return "Not quite right. Remember: a1 is a dark square, pattern alternates from there."
+        return "Not quite right. Remember: a1 is a black square, pattern alternates from there."
     return "Incorrect attempt #%d. Visualize the board pattern." % n
 
 
