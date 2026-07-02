@@ -32,7 +32,9 @@
   var SAY_LETTER = { a: "A", b: "B", c: "C", d: "D", e: "E", f: "F", g: "G", h: "H" };
 
   var STORAGE_KEY = "chess-speak";
-  var LEAD_MS = 160;    // small gap so the "correct" beep finishes before the voice
+  var LEAD_MS = 400;    // gap so the "correct" beep reads as its own event before the voice
+                        // (tuned by ear with recorded clips; was 160 when browser-TTS engine
+                        // lag added its own delay -- pre-decoded clips start instantly)
   var SAFETY_MS = 4000; // if an "ended" event never fires, advance anyway
 
   // Derive the clip folder from this script's own URL so it works no matter
