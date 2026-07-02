@@ -32,3 +32,4 @@ __pycache__/
 # Ignore other files
 README
 *zip
+.vercel

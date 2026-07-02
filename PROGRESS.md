@@ -4,8 +4,12 @@ Overnight unattended run per MIGRATION_SPEC.md. Update this file at every phase 
 meaningful sub-step. Terse entries only.
 
 ## Status
-- Current phase: 4 (stats + weighted selection) — GREEN
+- Current phase: 5 (deploy) — GREEN
 - Branch: `vercel-migration` (created from `main`)
+- Deployed URL: https://disquastung.vercel.app (Vercel project
+  `futuressobrights-projects/disquastung`, scope `futuressobrights-projects`
+  -- the only scope available on this account/CLI session). disquastung.com
+  and the PythonAnywhere site were not touched (guardrail 3).
 
 ## Recon notes (Phase 0.2)
 
@@ -198,6 +202,20 @@ meaningful sub-step. Terse entries only.
   explicitly calls the frequency-based assertion too flaky), then reloads
   and asserts the blob is unchanged.
 
+- Phase 5: `vercel deploy --yes` required `--scope futuressobrights-projects`
+  (the CLI refuses to guess a default team in non-interactive mode; this
+  account only has that one team). Vercel auto-detected Vite, linked a NEW
+  project named `disquastung` under that scope, and connected it to the
+  `allyourbeta/disquastung` GitHub repo. The very first `deploy --yes` (no
+  `--prod` flag) already landed as `target: "production"` and got aliased
+  to `disquastung.vercel.app` -- ran the explicit `vercel deploy --prod
+  --yes` too anyway (spec's literal 2-step), which is idempotent and
+  re-confirmed the same alias. Added `tests/e2e/prod-smoke.spec.js` (page
+  loads x4 + one full color round + audio clip request, relative paths
+  only so it runs against either target) and `playwright.prod.config.js`
+  (baseURL override, no local webServer) -- ran green against the deployed
+  URL. Full local suite (23 Playwright + 79 vitest) still green afterward.
+
 ## Phase checklist
 - [x] Phase 0 — golden master
 - [x] Phase 1 — scaffold
@@ -205,6 +223,7 @@ meaningful sub-step. Terse entries only.
 - [x] Phase 3 — UI wiring (17/17 Playwright + 69/69 vitest green)
 - [x] Phase 4 — stats (18/18 Playwright + 79/79 vitest green, all files <=300
       lines except the spec-approved auto-advance.js exception)
+- [x] Phase 5 — deployed to https://disquastung.vercel.app, smoke green
 - [ ] Phase 3 — UI wiring
 - [ ] Phase 4 — stats
 - [ ] Phase 5 — deploy
