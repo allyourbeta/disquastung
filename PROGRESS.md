@@ -4,7 +4,8 @@ Overnight unattended run per MIGRATION_SPEC.md. Update this file at every phase 
 meaningful sub-step. Terse entries only.
 
 ## Status
-- Current phase: 6 (PWA stretch) — GREEN
+- Current phase: 7 (morning report) — DONE, all phases green
+- See MORNING_REPORT.md for the owner-facing summary.
 - Branch: `vercel-migration` (created from `main`)
 - Deployed URL: https://disquastung.vercel.app (Vercel project
   `futuressobrights-projects/disquastung`, scope `futuressobrights-projects`
@@ -257,6 +258,7 @@ meaningful sub-step. Terse entries only.
       lines except the spec-approved auto-advance.js exception)
 - [x] Phase 5 — deployed to https://disquastung.vercel.app, smoke green
 - [x] Phase 6 (stretch) — PWA installed + precached, redeployed, smoke green
+- [x] Phase 7 — MORNING_REPORT.md written, final push done
 - [ ] Phase 3 — UI wiring
 - [ ] Phase 4 — stats
 - [ ] Phase 5 — deploy
