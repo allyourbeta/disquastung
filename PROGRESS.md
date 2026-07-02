@@ -4,7 +4,7 @@ Overnight unattended run per MIGRATION_SPEC.md. Update this file at every phase 
 meaningful sub-step. Terse entries only.
 
 ## Status
-- Current phase: 5 (deploy) — GREEN
+- Current phase: 6 (PWA stretch) — GREEN
 - Branch: `vercel-migration` (created from `main`)
 - Deployed URL: https://disquastung.vercel.app (Vercel project
   `futuressobrights-projects/disquastung`, scope `futuressobrights-projects`
@@ -216,6 +216,38 @@ meaningful sub-step. Terse entries only.
   (baseURL override, no local webServer) -- ran green against the deployed
   URL. Full local suite (23 Playwright + 79 vitest) still green afterward.
 
+- Phase 6 (stretch): `vite-plugin-pwa`, `registerType: 'autoUpdate'`.
+  Generated `public/icons/icon-192.png` from the existing 512px
+  `apple-touch-icon-512.png` via macOS `sips` (no new dependency -- a
+  system tool, not a package); `icon-512.png` is a plain copy of the same
+  source for manifest naming clarity. theme_color `#d4af37` / background_color
+  `#1a1a1a` sampled from `premium-chess-styles.css`'s `--accent-gold` /
+  `--primary-dark` CSS variables. `workbox.globPatterns` includes `m4a` so
+  all 64 clips precache up front at SW install (not just the app shell),
+  per spec 6.2 -- confirmed via `/workflows` prod build: 86 precache
+  entries, ~746 KiB. `injectRegister: 'auto'` (the plugin default) added
+  the manifest link + registerSW.js script tag to all 4 HTML pages
+  automatically; no manual HTML edits needed.
+- PWA E2E (`tests/e2e/pwa.spec.js`, 3 tests): manifest served with expected
+  fields; `navigator.serviceWorker.ready` resolves with an active worker,
+  zero console errors; offline-cache test blocks all `/audio/squares/**`
+  network requests via `context.route(...).abort()` then reloads and does
+  a raw `fetch()` from the page for a clip -- it resolves `ok` purely from
+  the SW's precache, never touching the network. Gotcha: workbox's
+  precache keys carry a `?__WB_REVISION__=...` query it adds itself, so an
+  exact-URL `cache.match()` from test code fails to find entries even once
+  precached -- match by `new URL(r.url).pathname` instead when polling
+  Cache Storage directly (the SW's own `fetch` handler does this
+  URL-stripping internally, which is why the real `fetch()` in the last
+  assertion works even though a raw `cache.match()` wouldn't).
+- Re-deployed (`vercel deploy --prod --yes --scope futuressobrights-projects`)
+  with PWA support; re-ran `playwright.prod.config.js` smoke subset against
+  https://disquastung.vercel.app -- green. Verified `/manifest.webmanifest`,
+  `/sw.js`, `/icons/icon-512.png` all return 200 via curl.
+- Full local suite after Phase 6: 26/26 Playwright + 79/79 vitest green,
+  `npm run build` green, no file over 300 lines (same auto-advance.js
+  exception).
+
 ## Phase checklist
 - [x] Phase 0 — golden master
 - [x] Phase 1 — scaffold
@@ -224,6 +256,7 @@ meaningful sub-step. Terse entries only.
 - [x] Phase 4 — stats (18/18 Playwright + 79/79 vitest green, all files <=300
       lines except the spec-approved auto-advance.js exception)
 - [x] Phase 5 — deployed to https://disquastung.vercel.app, smoke green
+- [x] Phase 6 (stretch) — PWA installed + precached, redeployed, smoke green
 - [ ] Phase 3 — UI wiring
 - [ ] Phase 4 — stats
 - [ ] Phase 5 — deploy
