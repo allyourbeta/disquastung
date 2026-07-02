@@ -1,0 +1,26 @@
+{
+  "knight": {
+    "1": "Incorrect. Try again.",
+    "2": "Still incorrect. Think about the knight's L-shaped moves.",
+    "3": "Not quite right. Remember, knights move in an L: 2 squares in one direction, 1 in perpendicular.",
+    "4": "Incorrect attempt #4. Keep trying - you've got this.",
+    "5": "Incorrect attempt #5. Keep trying - you've got this.",
+    "9": "Incorrect attempt #9. Keep trying - you've got this."
+  },
+  "bishop": {
+    "1": "Incorrect. Try again.",
+    "2": "Still incorrect. Think about diagonal movement patterns.",
+    "3": "Not quite right. Bishops only move diagonally and can't change square colors.",
+    "4": "Incorrect attempt #4. Consider the diagonal paths.",
+    "5": "Incorrect attempt #5. Consider the diagonal paths.",
+    "9": "Incorrect attempt #9. Consider the diagonal paths."
+  },
+  "color": {
+    "1": "Incorrect. Try again.",
+    "2": "Still incorrect. Think about the checkerboard pattern.",
+    "3": "Not quite right. Remember: a1 is a dark square, pattern alternates from there.",
+    "4": "Incorrect attempt #4. Visualize the board pattern.",
+    "5": "Incorrect attempt #5. Visualize the board pattern.",
+    "9": "Incorrect attempt #9. Visualize the board pattern."
+  }
+}

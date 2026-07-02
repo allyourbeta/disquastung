@@ -1,5 +1,6 @@
 # Ignore Python virtual environments
 knight-venv/
+.golden-venv/
 *.pyc
 *.pyo
 *.pyd
